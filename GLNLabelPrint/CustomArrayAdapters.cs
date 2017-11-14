@@ -253,6 +253,8 @@ namespace DakotaIntegratedSolutions
                 }
                 printedItems.Add(index, true);
                 ((IGLNLocation)objectList[index]).ToPrint = false;
+                ((IGLNLocation)objectList[index]).Selected = false;
+
                 locationList[index].ToPrint = false;
             }
             catch (Exception ex)
@@ -346,6 +348,7 @@ namespace DakotaIntegratedSolutions
             //locationList.
             //objectList.IndexOf.IndexOf(text);
             checkBoxState[position] = view.Checked;
+            ((IGLNLocation)objectList[position]).Selected = view.Checked;
             ((IGLNLocation)objectList[position]).ToPrint = view.Checked;
         }
 

@@ -52,6 +52,9 @@ namespace DakotaIntegratedSolutions
             locationsView = ((ListView)FindViewById<ListView>(GLNLabelPrint.Resource.Id.locationsView));
             locationList = new System.Collections.ObjectModel.ObservableCollection<IGLNLocation>();
             locationsView.Adapter = new CheckListCustomArrayAdapter(Android.App.Application.Context, Android.Resource.Layout.SimpleListItemChecked, locationList);
+            locationsView.ItemClick += LocationsView_ItemClick;
+            locationsView.ItemSelected += LocationsView_ItemSelected;
+
 
             // set up file utility for saving/loading settings
             fileUtility = new FileUtilImplementation();
@@ -94,6 +97,17 @@ namespace DakotaIntegratedSolutions
 
             //var findFilesPage = new Android.Content.Intent(this, typeof(FindFilesActivity));
             //StartActivityForResult(findFilesPage, (int)ActivityCode.LoadLocations);
+        }
+
+        private void LocationsView_ItemSelected(object sender, ItemSelectedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void LocationsView_ItemClick(object sender, EventArgs e)
+        {
+            //loc.Selected = check;
+            //((CheckListCustomArrayAdapter)locationsView.Adapter).SetChecked(pos, check);
         }
 
         private bool AntiPiracyCheck()
