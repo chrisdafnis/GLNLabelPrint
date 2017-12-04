@@ -15,6 +15,7 @@ using System.Data;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
 using System.Diagnostics;
+using Android.Content;
 //using Zebra.Sdk.Printer;
 //using LinkOS.Plugin;
 
@@ -98,11 +99,11 @@ namespace DakotaIntegratedSolutions
             get
             {
                 string documentsPath = "/mnt/ext_sdcard";
-//#if DEBUG
-//                documentsPath = "/mnt/sdcard";
-//#else
-                //documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-//#endif
+                //#if DEBUG
+                //                documentsPath = "/mnt/sdcard";
+                //#else
+                //documentsPath = "/sdcard/";
+                //#endif
                 return documentsPath;
             }
         }
@@ -436,6 +437,7 @@ namespace DakotaIntegratedSolutions
 
         public IEnumerable<string> GetFileList()
         {
+            LogFile("Log", "Building File List", MethodBase.GetCurrentMethod().Name, 0, GetType().Name);
             var directory = new DirectoryInfo(Directorypath);
             var masks = new[] { "*.csv"/*, "*.xlsx"*/ };
             var files = masks.SelectMany(directory.EnumerateFiles);
@@ -631,8 +633,16 @@ namespace DakotaIntegratedSolutions
         {
             StreamWriter log;
             DateTime today = DateTime.Now;
-            String filename = String.Format("{0}/{1:ddMMyyyy}.log", 
-                Directorypath, today);
+            String filename = String.Empty;
+
+            if (File.Exists(Directorypath))
+            {
+                filename = String.Format("{0}/{1:ddMMyyyy}.log", Directorypath, today);
+            }
+            else
+            {
+                filename = String.Format("{0}/{1:ddMMyyyy}.log", "/sdcard", today);
+            }
 
             if (!File.Exists(filename))
             {

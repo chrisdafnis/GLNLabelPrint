@@ -72,8 +72,8 @@ namespace DakotaIntegratedSolutions
                 fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
             }
 
-#if DEBUG
-#else
+//#if DEBUG
+//#else
             if (!AntiPiracyCheck())
             {
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -93,7 +93,7 @@ namespace DakotaIntegratedSolutions
                 var findFilesPage = new Android.Content.Intent(this, typeof(FindFilesActivity));
                 StartActivityForResult(findFilesPage, (int)ActivityCode.LoadLocations);
             }
-#endif
+//#endif
 
             //var findFilesPage = new Android.Content.Intent(this, typeof(FindFilesActivity));
             //StartActivityForResult(findFilesPage, (int)ActivityCode.LoadLocations);
@@ -113,7 +113,7 @@ namespace DakotaIntegratedSolutions
         private bool AntiPiracyCheck()
         {
             IList<string> validDeviceSerialNumbers = Resources.GetStringArray(GLNLabelPrint.Resource.Array.valid_devices);
-                //new string[] { "FHP5CM00227", "FHP5CM00269", "FHP5CM00232", "FHP5CM00144", "FHP5CM00013", "FHP4AM00107", "FHP52M00438", "FHP52M00075", "FHP52M00242" };
+            //new string[] { "FHP5CM00227", "FHP5CM00269", "FHP5CM00232", "FHP5CM00144", "FHP5CM00013", "FHP4AM00107", "FHP52M00438", "FHP52M00075", "FHP52M00242" };
             bool isValid = false;
 
             if (validDeviceSerialNumbers.Contains(Build.Serial))

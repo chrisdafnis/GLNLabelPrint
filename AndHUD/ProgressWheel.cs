@@ -3,12 +3,12 @@ using Android.Views;
 using Android.Graphics;
 using Android.Util;
 using Android.Content;
-//using AndHUD;
+//using AndroidHUD.AndHUD;
 
 namespace AndroidHUD
 {
-	public class ProgressWheel : AndHUD.ProgressWheel
-	{
+    public class ProgressWheel /*: AndHUD.ProgressWheel*/
+    {
 		public ProgressWheel(Context context) 
 			: this(context, null, 0)
 		{
@@ -19,7 +19,7 @@ namespace AndroidHUD
 		{
 		}
 
-		public ProgressWheel (Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
+		public ProgressWheel (Context context, IAttributeSet attrs, int defStyle) /*: base(context, attrs, defStyle)*/
 		{
 			CircleRadius = 80;
 			BarLength = 60;
@@ -46,7 +46,7 @@ namespace AndroidHUD
 			DelayMillis = 0;
 
 			spinHandler = new SpinHandler(msg => {
-				Invalidate ();
+				//Invalidate ();
 
 				if (isSpinning)
 				{
@@ -113,15 +113,15 @@ namespace AndroidHUD
 		//string text = "";
         //string[] splitText = new string[]{};
 
-		protected override void OnAttachedToWindow ()
-		{
-			base.OnAttachedToWindow ();
+		//protected override void OnAttachedToWindow ()
+		//{
+		//	base.OnAttachedToWindow ();
 
-			SetupBounds ();
-			SetupPaints ();
+		//	SetupBounds ();
+		//	SetupPaints ();
 
-			Invalidate ();
-		}
+		//	Invalidate ();
+		//}
 
 		void SetupPaints() 
 		{
@@ -157,12 +157,12 @@ namespace AndroidHUD
 //			                       this.LayoutParameters.Width - WheelPaddingRight,
 //			                       this.LayoutParameters.Height - WheelPaddingBottom);
 //
-			circleBounds = new RectF(WheelPaddingLeft + BarWidth,
-			                         WheelPaddingTop + BarWidth,
-			                         this.LayoutParameters.Width - WheelPaddingRight - BarWidth,
-			                         this.LayoutParameters.Height - WheelPaddingBottom - BarWidth);
+			//circleBounds = new RectF(WheelPaddingLeft + BarWidth,
+			//                         WheelPaddingTop + BarWidth,
+			//                         this.LayoutParameters.Width - WheelPaddingRight - BarWidth,
+			//                         this.LayoutParameters.Height - WheelPaddingBottom - BarWidth);
 
-			fullRadius = (this.LayoutParameters.Width - WheelPaddingRight - BarWidth)/2;
+			//fullRadius = (this.LayoutParameters.Width - WheelPaddingRight - BarWidth)/2;
 			CircleRadius = (fullRadius - BarWidth) + 1;
 		}
 
@@ -192,24 +192,24 @@ namespace AndroidHUD
 		//----------------------------------
 		//Animation stuff
 		//----------------------------------
-		protected override void OnDraw (Canvas canvas)
-		{
-			base.OnDraw (canvas);
+		//protected override void OnDraw (Canvas canvas)
+		//{
+		//	base.OnDraw (canvas);
 
-			//Draw the rim
-			canvas.DrawArc(circleBounds, 360, 360, false, rimPaint);
+		//	//Draw the rim
+		//	canvas.DrawArc(circleBounds, 360, 360, false, rimPaint);
 
-			//Draw the bar
-			if(isSpinning) 
-				canvas.DrawArc(circleBounds, progress - 90, BarLength, false, barPaint);
-			else
-				canvas.DrawArc(circleBounds, -90, progress, false, barPaint);
+		//	//Draw the bar
+		//	if(isSpinning) 
+		//		canvas.DrawArc(circleBounds, progress - 90, BarLength, false, barPaint);
+		//	else
+		//		canvas.DrawArc(circleBounds, -90, progress, false, barPaint);
 
-			//Draw the inner circle
-			canvas.DrawCircle((circleBounds.Width() / 2) + RimWidth + WheelPaddingLeft, 
-			                  (circleBounds.Height() / 2) + RimWidth + WheelPaddingTop, 
-			                  CircleRadius, 
-			                  circlePaint);
+		//	//Draw the inner circle
+		//	canvas.DrawCircle((circleBounds.Width() / 2) + RimWidth + WheelPaddingLeft, 
+		//	                  (circleBounds.Height() / 2) + RimWidth + WheelPaddingTop, 
+		//	                  CircleRadius, 
+		//	                  circlePaint);
 
 			//Draw the text (attempts to center it horizontally and vertically)
 //			int offsetNum = 2;
@@ -223,13 +223,13 @@ namespace AndroidHUD
 //				                - ((splitText.Length - 1) * (TextSize / 2)), textPaint);
 //				offsetNum++;
 //			}
-		}
+		//}
 
 		public void ResetCount() 
 		{
 			progress = 0;
 			//Text = "0%";
-			Invalidate();
+			//Invalidate();
 		}
 
 		public void StopSpinning() 
@@ -272,13 +272,13 @@ namespace AndroidHUD
 
 					//Text = Math.Round(((float)interimValue/(float)360)*(float)100) + "%";
 
-					Invalidate ();
+					//Invalidate ();
 				};
 
 				va.Start ();
 			} else {
 				progress = newProgress;
-				Invalidate ();
+				//Invalidate ();
 			}
 
 			spinHandler.SendEmptyMessage(0);

@@ -27,42 +27,6 @@ namespace AndroidHUD
 		public partial class Attribute
 		{
 			
-			// aapt resource value: 0x7f010003
-			public static int ahBarColor = 2130771971;
-			
-			// aapt resource value: 0x7f01000b
-			public static int ahBarLength = 2130771979;
-			
-			// aapt resource value: 0x7f01000a
-			public static int ahBarWidth = 2130771978;
-			
-			// aapt resource value: 0x7f010008
-			public static int ahCircleColor = 2130771976;
-			
-			// aapt resource value: 0x7f010007
-			public static int ahDelayMillis = 2130771975;
-			
-			// aapt resource value: 0x7f010009
-			public static int ahRadius = 2130771977;
-			
-			// aapt resource value: 0x7f010004
-			public static int ahRimColor = 2130771972;
-			
-			// aapt resource value: 0x7f010005
-			public static int ahRimWidth = 2130771973;
-			
-			// aapt resource value: 0x7f010006
-			public static int ahSpinSpeed = 2130771974;
-			
-			// aapt resource value: 0x7f010000
-			public static int ahText = 2130771968;
-			
-			// aapt resource value: 0x7f010001
-			public static int ahTextColor = 2130771969;
-			
-			// aapt resource value: 0x7f010002
-			public static int ahTextSize = 2130771970;
-			
 			static Attribute()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
@@ -164,55 +128,7 @@ namespace AndroidHUD
 		public partial class Styleable
 		{
 			
-			public static int[] ProgressWheel = new int[] {
-					2130771968,
-					2130771969,
-					2130771970,
-					2130771971,
-					2130771972,
-					2130771973,
-					2130771974,
-					2130771975,
-					2130771976,
-					2130771977,
-					2130771978,
-					2130771979};
-			
-			// aapt resource value: 3
-			public static int ProgressWheel_ahBarColor = 3;
-			
-			// aapt resource value: 11
-			public static int ProgressWheel_ahBarLength = 11;
-			
-			// aapt resource value: 10
-			public static int ProgressWheel_ahBarWidth = 10;
-			
-			// aapt resource value: 8
-			public static int ProgressWheel_ahCircleColor = 8;
-			
-			// aapt resource value: 7
-			public static int ProgressWheel_ahDelayMillis = 7;
-			
-			// aapt resource value: 9
-			public static int ProgressWheel_ahRadius = 9;
-			
-			// aapt resource value: 4
-			public static int ProgressWheel_ahRimColor = 4;
-			
-			// aapt resource value: 5
-			public static int ProgressWheel_ahRimWidth = 5;
-			
-			// aapt resource value: 6
-			public static int ProgressWheel_ahSpinSpeed = 6;
-			
-			// aapt resource value: 0
-			public static int ProgressWheel_ahText = 0;
-			
-			// aapt resource value: 1
-			public static int ProgressWheel_ahTextColor = 1;
-			
-			// aapt resource value: 2
-			public static int ProgressWheel_ahTextSize = 2;
+			public static int[] ProgressWheel;
 			
 			static Styleable()
 			{

@@ -184,12 +184,12 @@ namespace AndroidHUD
 				{
 					SetupDialog (context, maskType, cancelCallback, (a, d, m) => {
 						var inflater = LayoutInflater.FromContext(context);
-						var view = inflater.Inflate(Resource.Layout.loadingprogress, null);
+						var view = inflater.Inflate(Resource.Layout.loadingprogress, root: null);
 
 						if (clickCallback != null)
 							view.Click += (sender, e) => clickCallback();
 
-						progressWheel = view.FindViewById<ProgressWheel>(Resource.Id.loadingProgressWheel);
+						//progressWheel = view.FindViewById<ProgressWheel>(Resource.Id.loadingProgressWheel);
 						statusText = view.FindViewById<TextView>(Resource.Id.textViewStatus);
 
 						if (maskType != MaskType.Black)

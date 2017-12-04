@@ -16,7 +16,7 @@
   <string name="SelectAllLocations">Select All Locations</string>
   <string name="SelectNoLocations">Unselect All Locations</string>
   <string name="AboutBox">About</string>
-  <string name="Version">1.12.1000</string>
+  <string name="Version">2.0.1000</string>
   <string name="AboutBoxText">Copyright © Dakota Integrated Solutions Ltd, 2017</string>
   <string name="SearchPrinters">Searching for Printers...</string>
   <string name="LoadLocations">Select GLN Location</string>
@@ -50,6 +50,7 @@
     <item>FHP52M00374</item>
     <item>15134521650118</item>
     <item>FGK5BM00041</item>
+    <item>15106522502056</item>
   </string-array>
   <string name="Hello">Hello</string>
 </resources>
