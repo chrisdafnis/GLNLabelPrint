@@ -1,23 +1,18 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
-using Android.Text;
-using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
-using static Android.Widget.AdapterView;
+using AndroidHUD;
 using System;
-using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Zebra.Sdk.Comm;
-using Zebra.Sdk.Printer;
-using AndroidHUD;
+using static Android.Widget.AdapterView;
 
 namespace DakotaIntegratedSolutions
 {
@@ -30,7 +25,7 @@ namespace DakotaIntegratedSolutions
         ObservableCollection<IGLNLocation> locationList = new ObservableCollection<IGLNLocation>();
         int printQuantity = 1;
         string locationsFile;
-        //int currentSelected = 0;
+        // int currentSelected = 0;
         public enum ActivityCode { FindPrinters = 0, PrintQuantity, LoadLocations, LocationSearch, About/*, LocationInfo, */ };
 
         protected override void OnCreate(Bundle bundle)
@@ -42,11 +37,11 @@ namespace DakotaIntegratedSolutions
 
             // Get our button from the layout resource,
             // and attach an event to it
-            Button printButton = FindViewById<Button>(GLNLabelPrint.Resource.Id.PrintButton);
+            var printButton = FindViewById<Button>(GLNLabelPrint.Resource.Id.PrintButton);
             printButton.Click += PrintButton_Click;
             // disable print button until we have a printer connected and something selected to print
             printButton.Enabled = false;
-            TextView selectedPrinter = (TextView)FindViewById<TextView>(GLNLabelPrint.Resource.Id.selectedPrinterTxt);
+            var selectedPrinter = (TextView)FindViewById<TextView>(GLNLabelPrint.Resource.Id.selectedPrinterTxt);
             selectedPrinter.Text = "";
 
             locationsView = ((ListView)FindViewById<ListView>(GLNLabelPrint.Resource.Id.locationsView));
@@ -54,7 +49,6 @@ namespace DakotaIntegratedSolutions
             locationsView.Adapter = new CheckListCustomArrayAdapter(Android.App.Application.Context, Android.Resource.Layout.SimpleListItemChecked, locationList);
             locationsView.ItemClick += LocationsView_ItemClick;
             locationsView.ItemSelected += LocationsView_ItemSelected;
-
 
             // set up file utility for saving/loading settings
             fileUtility = new FileUtilImplementation();
@@ -68,15 +62,15 @@ namespace DakotaIntegratedSolutions
             {
                 ((TextView)FindViewById<TextView>(GLNLabelPrint.Resource.Id.selectedPrinterTxt)).SetText(GLNLabelPrint.Resource.String.NoPrinter);
 
-                //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
                 fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
             }
 
-//#if DEBUG
-//#else
+            // #if DEBUG
+            // #else
             if (!AntiPiracyCheck())
             {
-                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                var dialogBuilder = new AlertDialog.Builder(this);
 
                 dialogBuilder.SetTitle("Error");
                 dialogBuilder.SetMessage("This software is not permitted for use on this device.\n\rPlease contact your IT department.");
@@ -93,28 +87,28 @@ namespace DakotaIntegratedSolutions
                 var findFilesPage = new Android.Content.Intent(this, typeof(FindFilesActivity));
                 StartActivityForResult(findFilesPage, (int)ActivityCode.LoadLocations);
             }
-//#endif
+            // #endif
 
-            //var findFilesPage = new Android.Content.Intent(this, typeof(FindFilesActivity));
-            //StartActivityForResult(findFilesPage, (int)ActivityCode.LoadLocations);
+            // var findFilesPage = new Android.Content.Intent(this, typeof(FindFilesActivity));
+            // StartActivityForResult(findFilesPage, (int)ActivityCode.LoadLocations);
         }
 
-        private void LocationsView_ItemSelected(object sender, ItemSelectedEventArgs e)
+        void LocationsView_ItemSelected(object sender, ItemSelectedEventArgs e)
         {
             throw new NotImplementedException();
         }
 
-        private void LocationsView_ItemClick(object sender, EventArgs e)
+        void LocationsView_ItemClick(object sender, EventArgs e)
         {
-            //loc.Selected = check;
-            //((CheckListCustomArrayAdapter)locationsView.Adapter).SetChecked(pos, check);
+            // loc.Selected = check;
+            // ((CheckListCustomArrayAdapter)locationsView.Adapter).SetChecked(pos, check);
         }
 
-        private bool AntiPiracyCheck()
+        bool AntiPiracyCheck()
         {
             IList<string> validDeviceSerialNumbers = Resources.GetStringArray(GLNLabelPrint.Resource.Array.valid_devices);
-            //new string[] { "FHP5CM00227", "FHP5CM00269", "FHP5CM00232", "FHP5CM00144", "FHP5CM00013", "FHP4AM00107", "FHP52M00438", "FHP52M00075", "FHP52M00242" };
-            bool isValid = false;
+            // new string[] { "FHP5CM00227", "FHP5CM00269", "FHP5CM00232", "FHP5CM00144", "FHP5CM00013", "FHP4AM00107", "FHP52M00438", "FHP52M00075", "FHP52M00242" };
+            var isValid = false;
 
             if (validDeviceSerialNumbers.Contains(Build.Serial))
                 isValid = true;
@@ -124,7 +118,7 @@ namespace DakotaIntegratedSolutions
 
         public override void OnBackPressed()
         {
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            var dialogBuilder = new AlertDialog.Builder(this);
 
             dialogBuilder.SetTitle(GLNLabelPrint.Resource.String.QuitApplication);
             dialogBuilder.SetMessage(GLNLabelPrint.Resource.String.QuitPrompt);
@@ -132,14 +126,14 @@ namespace DakotaIntegratedSolutions
             dialogBuilder.SetNegativeButton(Android.Resource.String.No, delegate { });
             dialogBuilder.SetPositiveButton(Android.Resource.String.Yes, delegate
             {
-                this.Finish();
+                Finish();
             });
             dialogBuilder.Show();
         }
 
-        private void TogglePrintButtonEnabled()
+        void TogglePrintButtonEnabled()
         {
-            Button printButton = FindViewById<Button>(GLNLabelPrint.Resource.Id.PrintButton);
+            var printButton = FindViewById<Button>(GLNLabelPrint.Resource.Id.PrintButton);
             printButton.Enabled = !printButton.Enabled;
         }
 
@@ -176,7 +170,7 @@ namespace DakotaIntegratedSolutions
                     StartActivityForResult(aboutPage, (int)ActivityCode.About);
                     return true;
                 case GLNLabelPrint.Resource.Id.Quit:
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    var dialogBuilder = new AlertDialog.Builder(this);
 
                     dialogBuilder.SetTitle(GLNLabelPrint.Resource.String.QuitApplication);
                     dialogBuilder.SetMessage(GLNLabelPrint.Resource.String.QuitPrompt);
@@ -184,23 +178,25 @@ namespace DakotaIntegratedSolutions
                     dialogBuilder.SetNegativeButton(Android.Resource.String.No, delegate { });
                     dialogBuilder.SetPositiveButton(Android.Resource.String.Yes, delegate
                     {
-                        this.Finish();
+                        Finish();
                     });
                     dialogBuilder.Show();
                     return true;
             }
+
             return base.OnOptionsItemSelected(item);
         }
 
-        private void CheckAllLocations(bool check)
+        void CheckAllLocations(bool check)
         {
-            int pos = 0;
+            var pos = 0;
             foreach (IGLNLocation loc in locationList)
             {
                 loc.Selected = check;
                 ((CheckListCustomArrayAdapter)locationsView.Adapter).SetChecked(pos, check);
                 pos++;
             }
+
             ((CheckListCustomArrayAdapter)locationsView.Adapter).NotifyDataSetInvalidated();
         }
 
@@ -212,14 +208,16 @@ namespace DakotaIntegratedSolutions
                     {
                         if (resultCode == Result.Ok)
                         {
-                            String result = data.GetStringExtra("result");
+                            var result = data.GetStringExtra("result");
                             LoadXMLSettings();
                         }
+
                         if (resultCode == Result.Canceled)
                         {
-                            //Write your code if there's no result
+                            // Write your code if there's no result
                         }
                     }
+
                     break;
                 case ActivityCode.PrintQuantity:
                     {
@@ -232,19 +230,20 @@ namespace DakotaIntegratedSolutions
                             })).Start();
                             try
                             {
-
                             }
                             catch (Exception ex)
                             {
-                                //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                                // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
                                 fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
                             }
                         }
+
                         if (resultCode == Result.Canceled)
                         {
-                            //Write your code if there's no result
+                            // Write your code if there's no result
                         }
                     }
+
                     break;
                 case ActivityCode.LoadLocations:
                     {
@@ -254,30 +253,33 @@ namespace DakotaIntegratedSolutions
                             LoadFile(locationsFile);
                         }
                     }
+
                     break;
                 case ActivityCode.LocationSearch:
                     {
                         if (resultCode == Result.Ok)
                         {
-                            string searchLocation = data.GetStringExtra("location");
-                            ListCustomArrayAdapter adapter = (ListCustomArrayAdapter)locationsView.Adapter;
-                            int i = 0;
-                            bool found = false;
+                            var searchLocation = data.GetStringExtra("location");
+                            var adapter = (ListCustomArrayAdapter)locationsView.Adapter;
+                            var i = 0;
+                            var found = false;
                             foreach (IGLNLocation location in locationList)
                             {
                                 if (location.Code == searchLocation)
                                 {
                                     found = true;
                                     adapter.SetSelectedIndex(i);
-                                    //currentSelected = ((ListCustomArrayAdapter)locationsView.Adapter).GetSelectedIndex();
+                                    // currentSelected = ((ListCustomArrayAdapter)locationsView.Adapter).GetSelectedIndex();
                                     locationsView.SmoothScrollToPosition(i);
                                     break;
                                 }
+
                                 i++;
                             }
+
                             if (!found)
                             {
-                                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                                var dialogBuilder = new AlertDialog.Builder(this);
 
                                 dialogBuilder.SetTitle("Code Not Found");
                                 dialogBuilder.SetMessage("The room code '" + searchLocation + "' does not exist in the current database");
@@ -286,11 +288,13 @@ namespace DakotaIntegratedSolutions
                                 dialogBuilder.Show();
                             }
                         }
+
                         if (resultCode == Result.Canceled)
                         {
-                            //Write your code if there's no result
+                            // Write your code if there's no result
                         }
                     }
+
                     break;
             }
         }
@@ -306,13 +310,13 @@ namespace DakotaIntegratedSolutions
             }
             catch (Exception ex)
             {
-                //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
                 fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), GetType().Name);
             }
         }
         public async void LoadFile(string filename)
         {
-            string xmlString = String.Empty;
+            var xmlString = string.Empty;
             object res = null;
             try
             {
@@ -322,10 +326,10 @@ namespace DakotaIntegratedSolutions
                 AndHUD.Shared.Dismiss(this);
                 res = LoadLocations(filename);
 
-                XDocument xDoc = XDocument.Parse((string)res);
+                var xDoc = XDocument.Parse((string)res);
                 if (xDoc != null)
                 {
-                    XName xName = XName.Get("GLNLocation");
+                    var xName = XName.Get("GLNLocation");
 
                     foreach (XElement xElem in xDoc.Descendants("GLNLocation"))
                     {
@@ -347,6 +351,7 @@ namespace DakotaIntegratedSolutions
                             locationList.Add(location);
                         }
                     }
+
                     try
                     {
                         locationsView.Adapter = new CheckListCustomArrayAdapter(Android.App.Application.Context, Android.Resource.Layout.SimpleListItemChecked, locationList);
@@ -357,13 +362,13 @@ namespace DakotaIntegratedSolutions
                     }
                     catch (Exception ex)
                     {
-                        //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                        // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
                         fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
                     }
                 }
                 else
                 {
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                    var dialogBuilder = new AlertDialog.Builder(this);
 
                     dialogBuilder.SetTitle("File Error");
                     dialogBuilder.SetMessage("There was a problem loading this file. Please choose another file, or correct the error and try again.");
@@ -378,37 +383,37 @@ namespace DakotaIntegratedSolutions
             }
         }
 
-        private string LoadLocations(string filename)
+        string LoadLocations(string filename)
         {
-            XDocument xDoc = (XDocument)fileUtility.LoadGLNFile(filename);
-            string xmlDocString = xDoc.ToString();
-            string xmlHead = @"<?xml version=""1.0"" encoding=""utf-8"" ?>";
-            //string returnValue = String.Concat(@"<?xml version=""1.0"" encoding=""utf-8"" ?>", xDoc.ToString());
-            string returnValue = xmlHead + xmlDocString;
+            var xDoc = (XDocument)fileUtility.LoadGLNFile(filename);
+            var xmlDocString = xDoc.ToString();
+            var xmlHead = @"<?xml version=""1.0"" encoding=""utf-8"" ?>";
+            // string returnValue = String.Concat(@"<?xml version=""1.0"" encoding=""utf-8"" ?>", xDoc.ToString());
+            var returnValue = xmlHead + xmlDocString;
             return returnValue;
         }
 
-        private void SaveLocations(string filename, IGLNLocation location)
+        void SaveLocations(string filename, IGLNLocation location)
         {
             fileUtility.SaveLocation(filename, location);
         }
 
-        private void LoadXMLSettings()
+        void LoadXMLSettings()
         {
             zebraPrinter = (IZebraPrinter)fileUtility.LoadXMLSettings();
             try
             {
                 ((TextView)FindViewById<TextView>(GLNLabelPrint.Resource.Id.selectedPrinterTxt)).Text = zebraPrinter.FriendlyName;
-                //((Button)FindViewById<Button>(GLNLabelPrint.Resource.Id.PrintButton)).Enabled = true;
+                // ((Button)FindViewById<Button>(GLNLabelPrint.Resource.Id.PrintButton)).Enabled = true;
             }
             catch (Exception ex)
             {
-                //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
                 fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
             }
         }
 
-        private void PrintButton_Click(object sender, EventArgs e)
+        void PrintButton_Click(object sender, EventArgs e)
         {
             if (CheckPrinter())
             {
@@ -425,23 +430,23 @@ namespace DakotaIntegratedSolutions
             }
         }
 
-        private bool SendZplOverBluetooth()
+        bool SendZplOverBluetooth()
         {
-            bool success = false;
+            var success = false;
             try
             {
-                IConnection connection = ConnectionBuilder.Build("BT:" + zebraPrinter.MACAddress);
+                var connection = ConnectionBuilder.Build("BT:" + zebraPrinter.MACAddress);
                 // Open the connection - physical connection is established here.
                 connection.Open();
 
                 /* New change, print multiple labels from those selected */
-                int pos = 0;
+                var pos = 0;
                 foreach (IGLNLocation loc in locationList)
                 {
                     if (loc.ToPrint)
                     {
                         // Actual Label
-                        string zplData = GetZplGLNLabel(loc, pos);
+                        var zplData = GetZplGLNLabel(loc, pos);
                         fileUtility.LogFile("ZPL Output Debug", zplData, "MainActivity", 440, "SendZplOverBluetooth");
 
                         // Send the data to printer as a byte array.
@@ -454,6 +459,7 @@ namespace DakotaIntegratedSolutions
                         ((CheckListCustomArrayAdapter)locationsView.Adapter).SetPrintedIndex(pos);
                         ((CheckListCustomArrayAdapter)locationsView.Adapter).SetRowPrinted(((CheckListCustomArrayAdapter)locationsView.Adapter).GetView(pos, null, null) as CheckedTextView, pos);
                     }
+
                     pos++;
                 }
 
@@ -462,22 +468,23 @@ namespace DakotaIntegratedSolutions
             }
             catch (Zebra.Sdk.Comm.ConnectionException ex)
             {
-                //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
                 fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
             }
+
             return success;
         }
 
-        private byte[] GetBytes(string str)
+        byte[] GetBytes(string str)
         {
             byte[] bytes = new byte[str.Length];
             bytes = Encoding.UTF8.GetBytes(str);
             return bytes;
         }
 
-        private string GetZplGLNLabel(IGLNLocation location, int position)
+        string GetZplGLNLabel(IGLNLocation location, int position)
         {
-            string zpl =
+            var zpl =
                 @"^XA" + "\r\n" +
                 @"^MMT" + "\r\n" +
                 @"^PW601" + "\r\n" +
@@ -498,9 +505,9 @@ namespace DakotaIntegratedSolutions
                         @"^FT591,340^A0I,54,52^FD" + "Room Number:" + locationList[position].Code + "^FS" + "\r\n" +
                         @"^BY3,3,230^FT508,89^BCI,,N,N^FD>;>8414" + locationList[position].GLN + "^FS" + "\r\n" +
                         @"^FT441,41^A0I,34,33^FB276,1,0,C^FH\^FD(414)" + locationList[position].GLN + "\r\n";
-                    //@"^FT591,360^A0I,40,39^FD" + "Room Number:" + locationList[currentSelected].Code + "^FS" + "\r\n" +
-                    //@"^BY3,3,230^FT508,109^BCI,,N,N^FD>;>8414" + locationList[currentSelected].GLN + "^FS" + "\r\n" +
-                    //@"^FT441,71^A0I,34,33^FB276,1,0,C^FH\^FD(414)" + locationList[currentSelected].GLN + "\r\n";
+                    // @"^FT591,360^A0I,40,39^FD" + "Room Number:" + locationList[currentSelected].Code + "^FS" + "\r\n" +
+                    // @"^BY3,3,230^FT508,109^BCI,,N,N^FD>;>8414" + locationList[currentSelected].GLN + "^FS" + "\r\n" +
+                    // @"^FT441,71^A0I,34,33^FB276,1,0,C^FH\^FD(414)" + locationList[currentSelected].GLN + "\r\n";
                 }
                 else
                 {
@@ -509,17 +516,17 @@ namespace DakotaIntegratedSolutions
                         @"^FT441,71^A0I,34,33^FB276,1,0,C^FH\^FD(414)" + locationList[position].GLN + "\r\n";
                 }
             }
+
             zpl += @"^PQ" + printQuantity + ",0,1,Y^XZ" + "\r\n";
             return zpl;
         }
 
-        private bool CheckPrinter()
+        bool CheckPrinter()
         {
             if (null == zebraPrinter)
                 return false;
             else
-            return true;
+                return true;
         }
     }
 }
-

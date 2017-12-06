@@ -1,15 +1,11 @@
-
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
-using Android.Runtime;
-using Android.OS;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Collections.ObjectModel;
 
 namespace DakotaIntegratedSolutions
@@ -24,11 +20,10 @@ namespace DakotaIntegratedSolutions
 
     class ListCustomArrayAdapter : ArrayAdapter
     {
-        private IList objectList;
-        private int layoutResourceId;
-        private int selectedIndex;
-        private Dictionary<int, bool> printedItems;
-        private int[] colors = new int[] { Color.LightBlue, Color.White };
+        IList objectList;
+        int layoutResourceId, selectedIndex;
+        Dictionary<int, bool> printedItems;
+        int[] colors = new int[] { Color.LightBlue, Color.White };
 
         public ListCustomArrayAdapter(Context context, int layout, IList objects) : base(context, layout, objects)
         {
@@ -37,18 +32,9 @@ namespace DakotaIntegratedSolutions
             printedItems = new Dictionary<int, bool>();
         }
 
-        public override int Count
-        {
-            get
-            {
-                return base.Count;
-            }
-        }
+        public override int Count => base.Count;
 
-        public int GetSelectedIndex()
-        {
-            return selectedIndex;
-        }
+        public int GetSelectedIndex() => selectedIndex;
 
         public void SetSelectedIndex(int index)
         {
@@ -64,31 +50,23 @@ namespace DakotaIntegratedSolutions
                 {
                     printedItems.Remove(index);
                 }
+
                 printedItems.Add(index, true);
                 NotifyDataSetChanged();
             }
             catch (Exception ex)
             {
                 IFileUtil fileUtility = new FileUtilImplementation();
-                //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
-                //fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
+                // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                // fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
             }
         }
 
-        public override int GetItemViewType(int position)
-        {
-            return base.GetItemViewType(position);
-        }
+        public override int GetItemViewType(int position) => base.GetItemViewType(position);
 
-        public override Java.Lang.Object GetItem(int position)
-        {
-            return base.GetItem(position);
-        }
+        public override Java.Lang.Object GetItem(int position) => base.GetItem(position);
 
-        public override long GetItemId(int position)
-        {
-            return base.GetItemId(position);
-        }
+        public override long GetItemId(int position) => base.GetItemId(position);
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
@@ -98,11 +76,11 @@ namespace DakotaIntegratedSolutions
             holder = new ViewHolder();
             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
 
-            int colorPos = position % colors.Length;
-            Color color = new Color(colors[colorPos]);
+            var colorPos = position % colors.Length;
+            var color = new Color(colors[colorPos]);
             convertView.SetBackgroundColor(color);
 
-            TextView text = convertView.FindViewById<TextView>(GLNLabelPrint.Resource.Id.ListItemRowText);
+            var text = convertView.FindViewById<TextView>(GLNLabelPrint.Resource.Id.ListItemRowText);
             text.Text = objectList[position].ToString();
             holder.Text = text;
             holder.Selected = false;
@@ -126,7 +104,7 @@ namespace DakotaIntegratedSolutions
         public void HighlightCurrentRow(View rowView)
         {
             rowView.SetBackgroundColor(Color.DarkGray);
-            TextView textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListItemRowText);
+            var textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListItemRowText);
             if (textView != null)
                 textView.SetTextColor(Color.Yellow);
         }
@@ -134,7 +112,7 @@ namespace DakotaIntegratedSolutions
         public void UnhighlightCurrentRow(View rowView)
         {
             rowView.SetBackgroundColor(Color.Transparent);
-            TextView textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListItemRowText);
+            var textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListItemRowText);
             if (textView != null)
                 textView.SetTextColor(Color.Black);
         }
@@ -144,7 +122,7 @@ namespace DakotaIntegratedSolutions
             if (printedItems.ContainsKey(position))
             {
                 rowView.SetBackgroundColor(Color.ParseColor("#0A64A2"));
-                TextView textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListItemRowText);
+                var textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListItemRowText);
                 if (textView != null)
                     textView.SetTextColor(Color.White);
             }
@@ -153,8 +131,8 @@ namespace DakotaIntegratedSolutions
 
     class ListAlternateRowAdapter : ArrayAdapter
     {
-        private int[] colors = new int[] { Color.LightBlue, Color.White };
-        private IList objectList;
+        int[] colors = new int[] { Color.LightBlue, Color.White };
+        IList objectList;
 
         public ListAlternateRowAdapter(Context context, int layout, System.Collections.IList objects) : base(context, layout, objects)
         {
@@ -168,11 +146,11 @@ namespace DakotaIntegratedSolutions
             holder = new ViewHolder();
             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
 
-            int colorPos = position % colors.Length;
-            Color color = new Color(colors[colorPos]);
+            var colorPos = position % colors.Length;
+            var color = new Color(colors[colorPos]);
             convertView.SetBackgroundColor(color);
 
-            TextView textView = convertView.FindViewById<TextView>(GLNLabelPrint.Resource.Id.ListItemRowText);
+            var textView = convertView.FindViewById<TextView>(GLNLabelPrint.Resource.Id.ListItemRowText);
             textView.Text = objectList[position].ToString();
 
             if (textView != null)
@@ -184,14 +162,13 @@ namespace DakotaIntegratedSolutions
 
     class CheckListCustomArrayAdapter : ArrayAdapter
     {
-        private IList objectList;
-        private int layoutResourceId;
-        private int selectedIndex;
-        private Dictionary<int, bool> printedItems;
-        private int[] colors = new int[] { Color.LightBlue, Color.White };
+        IList objectList;
+        int layoutResourceId, selectedIndex;
+        Dictionary<int, bool> printedItems;
+        int[] colors = new int[] { Color.LightBlue, Color.White };
         bool[] checkBoxState;
-        private IList<IGLNLocation> locationList;
-        //Button printButton = null;
+        IList<IGLNLocation> locationList;
+        // Button printButton = null;
 
         public CheckListCustomArrayAdapter(Context context, int layout, IList objects) : base(context, layout, objects)
         {
@@ -201,18 +178,9 @@ namespace DakotaIntegratedSolutions
             checkBoxState = new bool[objectList.Count];
         }
 
-        public override int Count
-        {
-            get
-            {
-                return base.Count;
-            }
-        }
+        public override int Count => base.Count;
 
-        public int GetSelectedIndex()
-        {
-            return selectedIndex;
-        }
+        public int GetSelectedIndex() => selectedIndex;
 
         public void SetSelectedIndex(int index)
         {
@@ -223,18 +191,18 @@ namespace DakotaIntegratedSolutions
         public bool GetChecked(View view, int index)
         {
             ///View convertView = ((LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService)).Inflate(GLNLabelPrint.Resource.Layout.ListRowWithCheck, null);
-            //CheckBox checkBox = convertView.FindViewById<CheckBox>(GLNLabelPrint.Resource.Id.PrintCheckbox);
+            // CheckBox checkBox = convertView.FindViewById<CheckBox>(GLNLabelPrint.Resource.Id.PrintCheckbox);
 
             var simpleCheckedTextView = view as CheckedTextView;
-            Boolean checkedValue = simpleCheckedTextView.Checked; // check current state of CheckedTextView
-            ////checkBoxState[index] = 
+            var checkedValue = simpleCheckedTextView.Checked; // check current state of CheckedTextView
+            // //checkBoxState[index] =
             return checkBoxState[index];
         }
 
         public void SetPrinted(View view, int position)
         {
-            //var checkView = view as CheckedTextView;
-            //OnViewTouch(checkView, position);
+            // var checkView = view as CheckedTextView;
+            // OnViewTouch(checkView, position);
         }
 
         public void SetChecked(int index, bool check)
@@ -251,6 +219,7 @@ namespace DakotaIntegratedSolutions
                 {
                     printedItems.Remove(index);
                 }
+
                 printedItems.Add(index, true);
                 ((IGLNLocation)objectList[index]).ToPrint = false;
                 ((IGLNLocation)objectList[index]).Selected = false;
@@ -260,8 +229,8 @@ namespace DakotaIntegratedSolutions
             catch (Exception ex)
             {
                 IFileUtil fileUtility = new FileUtilImplementation();
-                //call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
-                //fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
+                // call LogFile method and pass argument as Exception message, event name, control name, error line number, current form name
+                // fileUtility.LogFile(ex.Message, ex.ToString(), MethodBase.GetCurrentMethod().Name, ExceptionHelper.LineNumber(ex), Class.SimpleName);
             }
         }
 
@@ -272,20 +241,11 @@ namespace DakotaIntegratedSolutions
             view.Invalidate();
         }
 
-        public override int GetItemViewType(int position)
-        {
-            return base.GetItemViewType(position);
-        }
+        public override int GetItemViewType(int position) => base.GetItemViewType(position);
 
-        public override Java.Lang.Object GetItem(int position)
-        {
-            return base.GetItem(position);
-        }
+        public override Java.Lang.Object GetItem(int position) => base.GetItem(position);
 
-        public override long GetItemId(int position)
-        {
-            return base.GetItemId(position);
-        }
+        public override long GetItemId(int position) => base.GetItemId(position);
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
@@ -298,14 +258,15 @@ namespace DakotaIntegratedSolutions
                     OnViewClick(view, position);
                 };
             }
+
             view.SetText(((IGLNLocation)objectList[position]).Code + ", " + ((IGLNLocation)objectList[position]).GLN, TextView.BufferType.Normal);
             view.SetTextColor(Color.Black);
             view.Checked = ((IGLNLocation)objectList[position]).Selected;
 
             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
 
-            int colorPos = position % colors.Length;
-            Color color = new Color(colors[colorPos]);
+            var colorPos = position % colors.Length;
+            var color = new Color(colors[colorPos]);
             view.SetBackgroundColor(color);
 
             if (((IGLNLocation)objectList[position]).Printed)
@@ -319,7 +280,7 @@ namespace DakotaIntegratedSolutions
 
         public bool CheckForItemsToPrint()
         {
-            bool print = false;
+            var print = false;
             foreach (IGLNLocation loc in objectList)
             {
                 if (loc.ToPrint)
@@ -328,25 +289,26 @@ namespace DakotaIntegratedSolutions
                     break;
                 }
             }
+
             return print;
         }
 
-        private void OnViewClick(object sender, int position)
+        void OnViewClick(object sender, int position)
         {
             var view = sender as CheckedTextView;
             view.Checked = !view.Checked;
-            
-            for (int i=0; i<objectList.Count; i++)
+
+            for (int i = 0; i < objectList.Count; i++)
             {
-                IGLNLocation loc = (IGLNLocation)objectList[i];
+                var loc = (IGLNLocation)objectList[i];
                 if (view.Text.Contains(loc.GLN))
                 {
                     position = i;
                     break;
                 }
             }
-            //locationList.
-            //objectList.IndexOf.IndexOf(text);
+            // locationList.
+            // objectList.IndexOf.IndexOf(text);
             checkBoxState[position] = view.Checked;
             ((IGLNLocation)objectList[position]).Selected = view.Checked;
             ((IGLNLocation)objectList[position]).ToPrint = view.Checked;
@@ -354,17 +316,17 @@ namespace DakotaIntegratedSolutions
 
         public void HighlightCurrentRow(View rowView)
         {
-            //rowView.SetBackgroundColor(Color.DarkGray);
-            //TextView textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id);
-            //if (textView != null)
+            // rowView.SetBackgroundColor(Color.DarkGray);
+            // TextView textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id);
+            // if (textView != null)
             //    textView.SetTextColor(Color.Yellow);
         }
 
         public void UnhighlightCurrentRow(View rowView)
         {
-            //rowView.SetBackgroundColor(Color.Transparent);
-            //TextView textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListWithCheckItemRowText);
-            //if (textView != null)
+            // rowView.SetBackgroundColor(Color.Transparent);
+            // TextView textView = (TextView)rowView.FindViewById(GLNLabelPrint.Resource.Id.ListWithCheckItemRowText);
+            // if (textView != null)
             //    textView.SetTextColor(Color.Black);
         }
 
@@ -374,11 +336,12 @@ namespace DakotaIntegratedSolutions
             {
                 if (((IGLNLocation)obj).Printed)
                 {
-                    CheckedTextView textView = convertView as CheckedTextView;
+                    var textView = convertView as CheckedTextView;
                     if (textView == null)
                     {
                         textView = ((LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService)).Inflate(global::Android.Resource.Layout.SimpleListItemChecked, null) as CheckedTextView;
                     }
+
                     textView.SetTextColor(Color.White);
                     textView.SetBackgroundColor(Color.ParseColor("#0A64A2"));
                 }
@@ -390,11 +353,12 @@ namespace DakotaIntegratedSolutions
             if (printedItems.ContainsKey(position))
             {
                 rowView.SetBackgroundColor(Color.ParseColor("#0A64A2"));
-                CheckedTextView textView = rowView as CheckedTextView;
+                var textView = rowView as CheckedTextView;
                 if (textView == null)
                 {
                     textView = ((LayoutInflater)Context.GetSystemService(Context.LayoutInflaterService)).Inflate(global::Android.Resource.Layout.SimpleListItemChecked, null) as CheckedTextView;
                 }
+
                 if (textView != null)
                     textView.SetTextColor(Color.White);
             }
@@ -402,19 +366,19 @@ namespace DakotaIntegratedSolutions
 
         internal void RefreshList(ObservableCollection<IGLNLocation> locationList)
         {
-            this.objectList.Clear();
+            objectList.Clear();
             foreach (IGLNLocation loc in locationList)
-            {
-                this.objectList.Add(loc);
-            }
+                objectList.Add(loc);
+
+
             NotifyDataSetChanged();
         }
     }
 
     class CheckListAlternateRowAdapter : ArrayAdapter
     {
-        private int[] colors = new int[] { Color.LightBlue, Color.White };
-        private IList objectList;
+        int[] colors = new int[] { Color.LightBlue, Color.White };
+        IList objectList;
 
         public CheckListAlternateRowAdapter(Context context, int layout, System.Collections.IList objects) : base(context, layout, objects)
         {
@@ -428,18 +392,18 @@ namespace DakotaIntegratedSolutions
             holder = new ViewHolder();
             var inflater = Application.Context.GetSystemService(Context.LayoutInflaterService) as LayoutInflater;
 
-            int colorPos = position % colors.Length;
-            Color color = new Color(colors[colorPos]);
+            var colorPos = position % colors.Length;
+            var color = new Color(colors[colorPos]);
             convertView.SetBackgroundColor(color);
 
-            //CheckBox checkBox = convertView.FindViewById<CheckBox>(GLNLabelPrint.Resource.Id.PrintCheckbox);
-            CheckedTextView checkTextView = convertView as CheckedTextView;//convertView.FindViewById<CheckedTextView>(GLNLabelPrint.Resource.Id.simpleCheckedListItem) as CheckedTextView;
+            // CheckBox checkBox = convertView.FindViewById<CheckBox>(GLNLabelPrint.Resource.Id.PrintCheckbox);
+            var checkTextView = convertView as CheckedTextView;//convertView.FindViewById<CheckedTextView>(GLNLabelPrint.Resource.Id.simpleCheckedListItem) as CheckedTextView;
             checkTextView.Text = objectList[position].ToString();
             checkTextView.Click += (sender, args) =>
             {
                 var pos = ((View)sender).Tag;
-                //do the work
-                //checkBox.Checked = !checkBox.Checked;
+                // do the work
+                // checkBox.Checked = !checkBox.Checked;
             };
 
             if (checkTextView != null)

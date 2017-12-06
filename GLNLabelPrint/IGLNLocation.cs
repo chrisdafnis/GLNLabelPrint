@@ -16,7 +16,8 @@ namespace DakotaIntegratedSolutions
         string Value();
         bool Printed { get; set; }
         bool Selected { get; set; }
-        bool ToPrint {
+        bool ToPrint
+        {
             get;
             set;
         }

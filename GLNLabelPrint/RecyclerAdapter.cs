@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Android.Support.V7.Widget;
 
 namespace GLNLabelPrint
 {
     public class RecyclerAdapter : RecyclerView.Adapter
     {
-        private ContactListAdapter<GLNListRow> Mitems;
+        ContactListAdapter<GLNListRow> Mitems;
         Context context;
         public RecyclerAdapter(ContactListAdapter<GLNListRow> Mitems)
         {
@@ -46,9 +38,9 @@ namespace GLNLabelPrint
         }
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            View listitem = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.ListRow, parent, false);
-            CheckedTextView txtcontactname = listitem.FindViewById<CheckedTextView>(Resource.Id.simpleCheckedListItem);
-            MyView view = new MyView(listitem)
+            var listitem = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.ListRow, parent, false);
+            var txtcontactname = listitem.FindViewById<CheckedTextView>(Resource.Id.simpleCheckedListItem);
+            var view = new MyView(listitem)
             {
                 mtxtcontactname = txtcontactname
                 //,
@@ -58,16 +50,10 @@ namespace GLNLabelPrint
         }
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            MyView myholder = holder as MyView;
+            var myholder = holder as MyView;
             myholder.mtxtcontactname.Text = Mitems[position].ContactName;
             myholder.mtxtcontactnumber.Text = Mitems[position].Number;
         }
-        public override int ItemCount
-        {
-            get
-            {
-                return Mitems.Count;
-            }
-        }
+        public override int ItemCount => Mitems.Count;
     }
 }
